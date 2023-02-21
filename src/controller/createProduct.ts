@@ -6,13 +6,15 @@ export default async function createProduct(request: Request, response: Response
 	try {
 		console.log(request.body);
 		const imagePath = request.file?.filename;
-		const { name, description, price, category, ingredients } = request.body;
+		const { name, description, ingredients, size } = request.body;
+		console.log(size);
+
+
 		const product = await Product.create({
 			name,
 			description,
 			imagePath,
-			price,
-			category,
+			size,
 			ingredients: ingredients ? JSON.parse(ingredients) : []
 		});
 		response.status(201).json(product);

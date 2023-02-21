@@ -1,34 +1,52 @@
 import { model, Schema } from "mongoose";
 
 
-export const Product = model("Product", new Schema({
+const ProductSchema = new Schema({
 	name: {
 		type: String,
-		required: true,
+		required: true
 	},
 	description: {
 		type: String,
-		required: true,
+		required: true
 	},
 	imagePath: {
 		type: String,
-		required: true,
+		required: true
+	},
+	size: {
+		type: Number,
+		enum: [300, 500, 700]
 	},
 	price: {
 		type: Number,
 		required: true,
 	},
 	ingredients: {
-		required: true,
 		type: [{
 			name: {
 				type: String,
-				required: true,
+				required: true
 			},
 			icon: {
 				type: String,
 				required: true,
 			},
-		}],
+		}]
 	}
-}));
+});
+
+ProductSchema.pre('save', function async(done) {
+	if (this.size === 300) {
+		this.price = 13;
+	} else if (this.size === 500) {
+		this.price = 20;
+	} else {
+		this.price = 30;
+	}
+
+	done();
+});
+
+export const Product = model('products', ProductSchema);
+

@@ -2,8 +2,15 @@ import Twilio from "twilio/lib/rest/Twilio";
 import * as dotenv from "dotenv";
 
 dotenv.config();
-console.log(process.env);
+const menu = `
+*------------SABORES 📝------------*
 
+1 - *Açaí da Dádila*
+_Banana, Morango, Granola e Mel_
+
+2 - *Açaí Caipira*
+_Banana, Morango e Paçoca_
+`;
 
 export class MessageHandler {
 	phoneNumber: string;
@@ -26,18 +33,22 @@ export class MessageHandler {
 			.then((message) => console.log(message.sid));
 	}
 
-	onboard() {
+	menu() {
 		const images: string[] = [
 			"https://i.imgur.com/S8pzlOP.png",
 			"https://i.imgur.com/LSIO6mu.png",
 			"https://i.imgur.com/gz8aBWQ.png",
 			"https://i.imgur.com/omvFgyO.png",
 			"https://i.imgur.com/FstohBc.png",
-			"https://i.imgur.com/uBATpQM.png",];
-
+			"https://i.imgur.com/uBATpQM.png",
+		];
 		for (const image of images) {
 			this.sendMessage('', [image]);
 		}
-		this.sendMessage(`Olá, *${this.profileName}!* Somos o *Açaí Pebinha*! Vamos montar o seu pedido? 📝`);
+	}
+
+	onboard() {
+		this.sendMessage(`Olá, *${this.profileName}!* Somos o *Açaí Pebinha*! Vamos montar o seu pedido? 📝\nDigite uma das opções acima. Ex.: 2`);
+		this.sendMessage(menu);
 	}
 }

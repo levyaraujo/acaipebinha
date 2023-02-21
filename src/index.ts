@@ -14,7 +14,7 @@ mongoose.connect("mongodb://db:27017/acaipebinha")
 		const port: number = Number(process.env.PORT) || 8000;
 
 		app.listen(port, () => {
-			console.log(`Server is running on ${port} 🚀`);
+			console.log(`Server is running on http://localhost:${port} 🚀`);
 		});
 	})
 	.catch(error => {
