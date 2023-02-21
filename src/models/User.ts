@@ -9,4 +9,8 @@ export const User = model("User", new Schema({
 		type: String,
 		required: true
 	},
+	address: {
+		type: Schema.Types.ObjectId,
+		ref: 'Address'
+	}
 }));

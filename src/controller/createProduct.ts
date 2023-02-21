@@ -7,6 +7,14 @@ export default async function createProduct(request: Request, response: Response
 		console.log(request.body);
 		const imagePath = request.file?.filename;
 		const { name, description, ingredients, size } = request.body;
+		let price: number;
+		if (size === 300) {
+			price = 13;
+		} else if (size === 500) {
+			price = 20;
+		} else {
+			price = 30;
+		}
 		console.log(size);
 
 
@@ -15,6 +23,7 @@ export default async function createProduct(request: Request, response: Response
 			description,
 			imagePath,
 			size,
+			price,
 			ingredients: ingredients ? JSON.parse(ingredients) : []
 		});
 		response.status(201).json(product);

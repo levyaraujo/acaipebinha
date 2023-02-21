@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 
-const ProductSchema = new Schema({
+export const Product = model('Product', new Schema({
 	name: {
 		type: String,
 		required: true
@@ -14,13 +14,13 @@ const ProductSchema = new Schema({
 		type: String,
 		required: true
 	},
-	size: {
-		type: Number,
-		enum: [300, 500, 700]
+	sizes: {
+		type: [Number],
+		default: [300, 500, 700]
 	},
-	price: {
-		type: Number,
-		required: true,
+	prices: {
+		type: [Number],
+		default: [13, 20, 30],
 	},
 	ingredients: {
 		type: [{
@@ -34,19 +34,5 @@ const ProductSchema = new Schema({
 			},
 		}]
 	}
-});
-
-ProductSchema.pre('save', function async(done) {
-	if (this.size === 300) {
-		this.price = 13;
-	} else if (this.size === 500) {
-		this.price = 20;
-	} else {
-		this.price = 30;
-	}
-
-	done();
-});
-
-export const Product = model('products', ProductSchema);
+}));
 

@@ -1,7 +1,7 @@
 FROM node:19.5.0
 WORKDIR /app
 COPY package.json ./
-RUN yarn install --production=true
+RUN yarn install
 COPY . .
 RUN yarn build
 
