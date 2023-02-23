@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import path from "node:path";
 
 mongoose.set('strictQuery', false);
-mongoose.connect("mongodb://localhost:27017/acaipebinha")
+mongoose.connect("mongodb://db:27017/acaipebinha")
 	.then(() => {
 		const app = express();
 		app.use(express.json());
