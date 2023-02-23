@@ -3,9 +3,9 @@ import { router } from './router';
 import mongoose from 'mongoose';
 import path from "node:path";
 
-const uri: string = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI;
 mongoose.set('strictQuery', false);
-mongoose.connect(uri)
+mongoose.connect(String(uri))
 	.then(() => {
 		const app = express();
 		app.use(express.json());
