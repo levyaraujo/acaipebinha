@@ -1,16 +1,17 @@
 import Twilio from "twilio/lib/rest/Twilio";
 import * as dotenv from "dotenv";
+import { Product } from "../models/Product";
 
 dotenv.config();
-const menu = `
-*------------SABORES 📝------------*
+// const menu = `
+// *------------SABORES 📝------------*
 
-1 - *Açaí da Dádila*
-_Banana, Morango, Granola e Mel_
+// 1 - *Açaí da Dádila*
+// _Banana, Morango, Granola e Mel_
 
-2 - *Açaí Caipira*
-_Banana, Morango e Paçoca_
-`;
+// 2 - *Açaí Caipira*
+// _Banana, Morango e Paçoca_
+// `;
 
 export class MessageHandler {
 	phoneNumber: string;
@@ -48,7 +49,9 @@ export class MessageHandler {
 	}
 
 	onboard() {
+		const products = Product.find({}, { _id: 0 });
+		this.sendMessage(`Conheça nossos sabores: ${products}`);
 		this.sendMessage(`Olá, *${this.profileName}!* Somos o *Açaí Pebinha*! Vamos montar o seu pedido? 📝\nDigite uma das opções acima. Ex.: 2`);
-		this.sendMessage(menu);
+		// this.sendMessage(menu);
 	}
 }

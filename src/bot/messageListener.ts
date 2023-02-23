@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { MessageHandler } from '../utils/messageHandler';
+import { MessageHandler } from './messageHandler';
 
 
 export async function userMessageHandler(request: Request, response: Response) {
