@@ -50,7 +50,7 @@ export class MessageHandler {
 
 	onboard() {
 		const products = Product.find({}, { _id: 0 });
-		this.sendMessage(`Conheça nossos sabores: ${products}`);
+		this.sendMessage(`Conheça nossos sabores: ${JSON.stringify(products)}`);
 		this.sendMessage(`Olá, *${this.profileName}!* Somos o *Açaí Pebinha*! Vamos montar o seu pedido? 📝\nDigite uma das opções acima. Ex.: 2`);
 		// this.sendMessage(menu);
 	}
