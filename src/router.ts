@@ -5,8 +5,25 @@ import createUser from './controller/createUser';
 import getProducts from './controller/getProducts';
 import multer from "multer";
 import path from "node:path";
+import cors from "cors";
+
+//options for cors midddleware
+const options: cors.CorsOptions = {
+	allowedHeaders: [
+		'Origin',
+		'X-Requested-With',
+		'Content-Type',
+		'Accept',
+		'X-Access-Token',
+	],
+	credentials: true,
+	methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+	origin: "http://localhost:5173",
+	preflightContinue: false,
+};
 
 export const router = Router();
+router.use(cors(options));
 const upload = multer({
 	storage: multer.diskStorage({
 		destination(req, file, callback) {
@@ -23,3 +40,5 @@ router.post('/webhook', userMessageHandler);
 router.post('/products', upload.single('image'), createProduct);
 router.get('/products', getProducts);
 router.post('/users', createUser);
+
+router.options('*', cors(options));

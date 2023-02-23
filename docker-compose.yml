@@ -1,6 +1,7 @@
 version: '3'
 services:
   db:
+    container_name: db
     image: mongo:5.0.0
     ports:
       - "27017:27017"
@@ -12,6 +13,7 @@ services:
       timeout: 10s
       retries: 5
   app:
+    container_name: app
     build:
       dockerfile: Dockerfile
     environment:
