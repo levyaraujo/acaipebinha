@@ -49,8 +49,14 @@ export class MessageHandler {
 	}
 
 	onboard() {
-		const products = Product.find({}, { _id: 0 });
-		this.sendMessage(`Conheça nossos sabores: ${JSON.stringify(products)}`);
+		const products = Product.find({}, { _id: 0 })
+			.then(products => {
+				return products;
+			})
+			.catch(err => {
+				console.log(err);
+			});
+		this.sendMessage(`Conheça nossos sabores: ${products.toString()}`);
 		this.sendMessage(`Olá, *${this.profileName}!* Somos o *Açaí Pebinha*! Vamos montar o seu pedido? 📝\nDigite uma das opções acima. Ex.: 2`);
 		// this.sendMessage(menu);
 	}
