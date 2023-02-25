@@ -27,13 +27,13 @@ export class MessageHandler {
 	}
 
 	async menu() {
+		const site = process.env.site;
 		const data = await Product.find();
 		for (const product of data) {
-			const image = `https://8af4-45-7-26-90.sa.ngrok.io/static/${product.imagePath}`;
+			const image = `${site}/static/${product.imagePath}`;
 			console.log(image);
 			const description = `*${product.name}*\n\n${product.description}`;
 			setInterval(() => { this.sendMessage(description, [image]); }, 3000);
-
 		}
 
 		return data;
