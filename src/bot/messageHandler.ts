@@ -3,15 +3,7 @@ import * as dotenv from "dotenv";
 import { Product } from "../models/Product";
 
 dotenv.config();
-// const menu = `
-// *------------SABORES 📝------------*
 
-// 1 - *Açaí da Dádila*
-// _Banana, Morango, Granola e Mel_
-
-// 2 - *Açaí Caipira*
-// _Banana, Morango e Paçoca_
-// `;
 
 export class MessageHandler {
 	phoneNumber: string;
@@ -34,29 +26,21 @@ export class MessageHandler {
 			.then((message) => console.log(message.sid));
 	}
 
-	menu() {
-		const images: string[] = [
-			"https://i.imgur.com/S8pzlOP.png",
-			"https://i.imgur.com/LSIO6mu.png",
-			"https://i.imgur.com/gz8aBWQ.png",
-			"https://i.imgur.com/omvFgyO.png",
-			"https://i.imgur.com/FstohBc.png",
-			"https://i.imgur.com/uBATpQM.png",
-		];
-		for (const image of images) {
-			this.sendMessage('', [image]);
+	async menu() {
+		const data = await Product.find();
+		for (const product of data) {
+			const image = `https://8af4-45-7-26-90.sa.ngrok.io/static/${product.imagePath}`;
+			console.log(image);
+			const description = `*${product.name}*\n\n${product.description}`;
+			setInterval(() => { this.sendMessage(description, [image]); }, 3000);
+
 		}
+
+		return data;
 	}
 
-	onboard() {
-		const products = Product.find({}, { _id: 0 })
-			.then(products => {
-				return products;
-			})
-			.catch(err => {
-				console.log(err);
-			});
-		this.sendMessage(`Conheça nossos sabores: ${products.toString()}`);
+	async onboard() {
+		this.menu();
 		this.sendMessage(`Olá, *${this.profileName}!* Somos o *Açaí Pebinha*! Vamos montar o seu pedido? 📝\nDigite uma das opções acima. Ex.: 2`);
 		// this.sendMessage(menu);
 	}

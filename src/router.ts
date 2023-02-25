@@ -18,7 +18,7 @@ const options: cors.CorsOptions = {
 	],
 	credentials: true,
 	methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-	origin: "http://localhost:5173",
+	origin: ["http://localhost:5173", "https://8af4-45-7-26-90.sa.ngrok.io"],
 	preflightContinue: false,
 };
 
