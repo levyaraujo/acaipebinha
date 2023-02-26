@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { Address } from "../models/Address";
-import { User } from "../models/User";
+// import { Address } from "../models/Address";
+// import { User } from "../models/User";
 
 export default async function createUser(request: Request, response: Response) {
 	try {

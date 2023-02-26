@@ -3,6 +3,7 @@ import { router } from './router';
 import mongoose from 'mongoose';
 import path from "node:path";
 import * as dotenv from 'dotenv';
+import { rateLimiter } from './middlewares/rateLimiter';
 
 dotenv.config();
 
@@ -11,8 +12,9 @@ mongoose.set('strictQuery', false);
 mongoose.connect(String(uri))
 	.then(() => {
 		const app = express();
-		const staticPath = process.env.staticPath || '/media';
-		app.use('/static', express.static(staticPath));
+		app.use('/webhook', rateLimiter);
+		const staticPath = String(process.env.IMAGES_PATH);
+		app.use('/images', express.static(staticPath));
 		app.use(express.json());
 		app.use(express.urlencoded({ extended: false }));
 		app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
