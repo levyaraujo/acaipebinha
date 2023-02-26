@@ -1,9 +1,19 @@
-import rateLimit from 'express-rate-limit';
+export function throttleAsync(fn: any, wait: number) {
+	const lastRun = 0;
 
-export const rateLimiter = rateLimit({
-	windowMs: 2000,
-	max: 1,
-	message: 'You have exceeded the 100 requests in 24 hrs limit!',
-	standardHeaders: true,
-	legacyHeaders: false,
-});
+	async function throttled(...args: any) {
+		const currentWait = lastRun + wait - Date.now();
+		const shouldRun = currentWait <= 0;
+
+		if (shouldRun) {
+			return await fn(...args);
+		} else {
+			return await new Promise(function (resolve) {
+				setTimeout(function () {
+					resolve(throttled(...args));
+				}, currentWait);
+			});
+		}
+	}
+	return throttled;
+}
