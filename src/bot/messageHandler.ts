@@ -1,50 +1,41 @@
-import Twilio from "twilio/lib/rest/Twilio";
-import * as dotenv from "dotenv";
-import { Product } from "../models/Product";
-
-dotenv.config();
+import axios from 'axios';
 
 
-export class MessageHandler {
-	phoneNumber: string;
+
+export default class Bot {
 	profileName: string;
+	phoneNumber: string;
 
-	constructor(phoneNumber: string, profileName: string) {
-		this.phoneNumber = phoneNumber;
+	constructor(profileName: string, phoneNumber: string) {
 		this.profileName = profileName;
-	}
-	private async sendMessage(message?: string, media?: string[]): Promise<void> {
-		const client = new Twilio(process.env.SID, process.env.TOKEN);
-
-		await client.messages
-			.create({
-				body: String(message),
-				to: `whatsapp:+${this.phoneNumber}`, // Text this number
-				from: `whatsapp:+${process.env.BOT}`, // From a valid Twilio number
-				mediaUrl: media
-			})
-			.then((message) => console.log(message.sid));
+		this.phoneNumber = phoneNumber;
 	}
 
-	async menu() {
-		const site = process.env.site;
-		const data = await Product.find().then(data => {
-			return data;
-		}
-		);
-		for (const product of data) {
-			console.log(product);
-			const image = `${site}/images/${product.imagePath}`;
-			const description = `*${product.name}*\n\n_${product.description}_`;
+	private async sendMessage(recipient: string, message: string) {
+		const url = `${process.env.WHATSAPP_URL}`;
+		const config = {
+			headers: {
+				'Authorization': `Bearer ${process.env.TOKEN}`,
+				'Content-Type': 'application/json'
+			}
+		};
 
-			await new Promise(resolve => setTimeout(resolve, 2000));
-			this.sendMessage(description, [image]);
-		}
+		const payload = {
+			"messaging_product": "whatsapp",
+			"preview_url": false,
+			"recipient_type": "individual",
+			"to": recipient,
+			"type": "text",
+			"text": {
+				"body": message
+			}
+		};
+		const response = await axios.post(url, payload, config);
+
+		return response;
 	}
 
-	async onboard() {
-		this.menu();
-		this.sendMessage(`Olá, *${this.profileName}!* Somos o *Açaí Pebinha*! Vamos montar o seu pedido? 📝\nDigite uma das opções acima. Ex.: 2`);
-		// this.sendMessage(menu);
+	onboard() {
+		this.sendMessage(this.phoneNumber, `Olá, *${this.profileName}*! Tudo bem? Acesse o link abaixo e faça seu pedido! 🥰 \n\nhttps://www.google.com.br`);
 	}
 }
