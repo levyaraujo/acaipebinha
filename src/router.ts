@@ -19,7 +19,7 @@ const options: cors.CorsOptions = {
 	],
 	credentials: true,
 	methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-	origin: "http://localhost:5173",
+	origin: ["http://localhost:5173", "https://acaipebinha.tunnelto.dev"],
 	preflightContinue: false,
 };
 

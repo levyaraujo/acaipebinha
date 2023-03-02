@@ -1,6 +1,7 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
 
-
+dotenv.config();
 
 export default class Bot {
 	profileName: string;
@@ -16,7 +17,7 @@ export default class Bot {
 		const config = {
 			headers: {
 				'Authorization': `Bearer ${process.env.TOKEN}`,
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			}
 		};
 
@@ -30,12 +31,16 @@ export default class Bot {
 				"body": message
 			}
 		};
-		const response = await axios.post(url, payload, config);
 
-		return response;
+		try {
+			const response = await axios.post(url, payload, config);
+			return response;
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	onboard() {
-		this.sendMessage(this.phoneNumber, `Olá, *${this.profileName}*! Tudo bem? Acesse o link abaixo e faça seu pedido! 🥰 \n\nhttps://www.google.com.br`);
+		this.sendMessage(this.phoneNumber, `Olá, *${this.profileName}*! Tudo bem? Acesse o link abaixo e faça seu pedido! 🥰 \n\nhttps://acaipebinha.tunnelto.dev/`);
 	}
 }
