@@ -6,35 +6,33 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const s3 = new S3Client({
-	region: process.env.AWS_BUCKET_REGION,
-	credentials: {
-		accessKeyId: String(process.env.AWS_USER_ACCESS_KEY),
-		secretAccessKey: String(process.env.AWS_SECRET_KEY)
-	}
+  region: process.env.AWS_BUCKET_REGION,
+  credentials: {
+    accessKeyId: String(process.env.AWS_USER_ACCESS_KEY),
+    secretAccessKey: String(process.env.AWS_SECRET_KEY)
+  },
 });
 
 export async function getImage(imageName: string) {
-	const bucketName = String(process.env.AWS_BUCKET_NAME);
-	const downloadParams = {
-		Bucket: bucketName,
-		Key: `acaimages/${imageName}`
-	};
+  const bucketName = String(process.env.AWS_BUCKET_NAME);
+  const downloadParams = {
+    Bucket: bucketName,
+    Key: `acaimages/${imageName}`
+  };
 
-	const data = await s3.send(new GetObjectCommand(downloadParams));
-	return data;
+  const data = await s3.send(new GetObjectCommand(downloadParams));
+  return data.Body;
 }
 
 export async function serveImage(request: Request, response: Response) {
-	try {
-		const image = await getImage(request.params.imageName);
-		console.log(image);
-
-
-		response.setHeader("Content-Type", image.ContentType?.toString() ?? "image/png");
-
-		return response.send(image.Body);
-	} catch (err) {
-		console.log(err);
-		response.status(404).send("Image not found");
-	}
+  try {
+    const image = await getImage(request.params.imageName);
+    image?.transformToByteArray()?.then((data) => {
+      response.setHeader('Content-Type', 'image/png');
+      response.send(Buffer.from(data));
+    });
+  } catch (err) {
+    console.log(err);
+    response.status(404).send("Image not found");
+  }
 }

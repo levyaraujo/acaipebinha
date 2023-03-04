@@ -6,21 +6,22 @@ import getProducts from './controller/getProducts';
 import cors from "cors";
 import { serveImage } from './middlewares/serveImages';
 import { validateWhatsAppKey } from './controller/validateWhatsAppKey';
+import { uploadImage } from './middlewares/imageUploader';
 
 
 //options for cors midddleware
 const options: cors.CorsOptions = {
-	allowedHeaders: [
-		'Origin',
-		'X-Requested-With',
-		'Content-Type',
-		'Accept',
-		'X-Access-Token',
-	],
-	credentials: true,
-	methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-	origin: ["http://localhost:5173", "https://acaipebinha.tunnelto.dev"],
-	preflightContinue: false,
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'X-Access-Token',
+  ],
+  credentials: true,
+  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+  origin: ["http://localhost:5173", "https://acaipebinha.tunnelto.dev"],
+  preflightContinue: false,
 };
 
 export const router = Router();
@@ -34,5 +35,6 @@ router.post('/products', createProduct);
 router.get('/products', getProducts);
 router.post('/users', createUser);
 router.get('/static/:imageName', serveImage);
+router.post('/images', uploadImage);
 
 router.options('*', cors(options));
