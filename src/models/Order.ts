@@ -1,30 +1,36 @@
 import { model, Schema } from "mongoose";
 
 export const Order = model("Order", new Schema({
-	product: {
-		type: Schema.Types.ObjectId,
-		ref: 'Product'
-	},
-	quantity: {
-		type: Number,
-		required: true
-	},
-	price: {
-		type: Number,
-		required: true
-	},
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: 'User',
-		required: true
-	},
-	status: {
-		type: String,
-		enum: ['Pending', 'Processing', 'Shipped', 'Delivered'],
-		default: 'Pending'
-	},
-	created_at: {
-		type: Date,
-		default: Date.now
-	}
+  products: {
+    required: true,
+    type: [{
+      product: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'Product',
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+    }],
+  },
+  total: {
+    type: Number,
+    required: true
+  },
+  address: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'Address',
+  },
+  status: {
+    type: String,
+    enum: ['Pending', 'Processing', 'Shipped', 'Delivered'],
+    default: 'Pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  }
 }));
