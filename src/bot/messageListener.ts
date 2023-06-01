@@ -27,16 +27,13 @@ export async function userMessageHandler(request: Request, response: Response) {
   console.log(data);
   let profileName: string;
   const message = data.entry[0].changes[0].value;
-  const userMessage = message.messages[0].text.body;
-  console.log(userMessage);
-  console.log(JSON.stringify(data.entry[0].changes[0]));
 
   try {
     if ("contacts" in data.entry[0].changes[0].value && "messages" in message) {
       profileName = message.contacts[0].profile.name;
       const phoneNumber = message.contacts[0].wa_id;
       const bot = new Bot(profileName, phoneNumber);
-      await bot.onboard(userMessage);
+      bot.onboard();
     }
 
     return response.sendStatus(200);

@@ -1,8 +1,5 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import { aiResponse } from "../lib/openAI/openai";
-import { ChatCompletionRequestMessage } from "openai";
-import { initPrompt } from "../utils/initPrompt";
 
 dotenv.config();
 
@@ -43,27 +40,10 @@ export default class Bot {
     }
   }
 
-  async onboard(message: string) {
-    const customerChat = {
-      customer: {
-        name: this.profileName,
-        phone: this.phoneNumber,
-      },
-      messages: [
-        {
-          role: "system",
-          content: initPrompt(this.profileName),
-        },
-      ],
-    };
-
-    const response =
-      (await aiResponse([{ role: "user", content: message }])) ||
-      "Não entendi, poderia repetir?";
-    customerChat.messages.push({
-      role: "assistant",
-      content: response,
-    });
-    this.sendMessage(this.phoneNumber, response);
+  onboard() {
+    this.sendMessage(
+      this.phoneNumber,
+      `Olá, *${this.profileName}*! Tudo bem? Acesse o link abaixo e faça seu pedido! 🥰 \n\nhttps://acaipebinha.tunnelto.dev/`
+    );
   }
 }
