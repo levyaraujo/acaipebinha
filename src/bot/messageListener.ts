@@ -28,6 +28,7 @@ export async function userMessageHandler(request: Request, response: Response) {
   let profileName: string;
   const message = data.entry[0].changes[0].value;
   const userMessage = message.messages[0].text.body;
+  console.log(userMessage);
   console.log(JSON.stringify(data.entry[0].changes[0]));
 
   try {
