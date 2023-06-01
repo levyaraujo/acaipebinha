@@ -6,6 +6,7 @@ export async function userMessageHandler(request: Request, response: Response) {
   console.log(data);
   let profileName: string;
   const message = data.entry[0].changes[0].value;
+  const userMessage = message.messages[0] ? message.messages[0].text.body : "";
   console.log(JSON.stringify(data.entry[0].changes[0]));
 
   try {
@@ -13,7 +14,7 @@ export async function userMessageHandler(request: Request, response: Response) {
       profileName = message.contacts[0].profile.name;
       const phoneNumber = message.contacts[0].wa_id;
       const bot = new Bot(profileName, phoneNumber);
-      bot.onboard();
+      await bot.onboard(userMessage);
     }
 
     return response.sendStatus(200);
