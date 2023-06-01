@@ -1,27 +1,6 @@
 import { Request, Response } from "express";
 import Bot from "./messageHandler";
 
-const content = {
-  value: {
-    messaging_product: "whatsapp",
-    metadata: {
-      display_phone_number: "15550910644",
-      phone_number_id: "103179066135470",
-    },
-    contacts: [{ profile: { name: "Levy" }, wa_id: "559481362600" }],
-    messages: [
-      {
-        from: "559481362600",
-        id: "wamid.HBgMNTU5NDgxMzYyNjAwFQIAEhgSQzUwQkE5RUUwQTg4QjI4Q0QyAA==",
-        timestamp: "1685653761",
-        text: { body: "olá" },
-        type: "text",
-      },
-    ],
-  },
-  field: "messages",
-};
-
 export async function userMessageHandler(request: Request, response: Response) {
   const data = request.body;
   console.log(data);
